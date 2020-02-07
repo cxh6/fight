@@ -187,6 +187,16 @@ export default {
       }
     }
   },
+  watch: {
+    // 对 searchForm 做深度监听
+    searchForm: {
+      handler(newV, oldV) {
+        // 重新获得基础试题
+        this.getQuestionList()
+      },
+      deep: true
+    }
+  },
   created() {
     this.getQuestionList() // 基础题库列表
     this.getCatalogIDList() // 二级目录列表
@@ -215,7 +225,8 @@ export default {
     },
     // 基础题库列表
     async getQuestionList() {
-      let res = await list()
+      // 给list传递数据检索的条件信息
+      let res = await list(this.searchForm)
       // console.log(res)
       this.questionList = res.data.items
     },
