@@ -2,6 +2,12 @@
   <div class="dashboard-container">
     <div class="app-container">
       <el-card class="box-card">
+        <el-row>
+          <el-col>
+            <el-button type="primary" size="mini" @click="$router.push('/questions/new')">新增试题</el-button>
+            <el-button type="danger" size="mini">批量导入</el-button>
+          </el-col>
+        </el-row>
         <!-- 第一行 -->
         <el-row :gutter="20">
           <el-col :span="6">
