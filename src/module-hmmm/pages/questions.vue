@@ -123,7 +123,7 @@
           <el-table-column label="序号" type="index" width="60"></el-table-column>
           <el-table-column label="试题编号" prop="number"></el-table-column>
           <el-table-column label="学科" prop="subject"></el-table-column>
-          <el-table-column label="题型" prop="questionType"></el-table-column>
+          <el-table-column :formatter="questionTypeFMT" label="题型" prop="questionType"></el-table-column>
           <el-table-column label="题干" prop="question"></el-table-column>
           <el-table-column label="录入时间" prop="addDate" width="170"></el-table-column>
           <el-table-column label="难度" prop="difficulty"></el-table-column>
@@ -200,6 +200,12 @@ export default {
   methods: {
     provinces, // 城市 简易成员赋值 provinces:provinces
     citys, // 区县 简易成员赋值
+    // 对 题型 进行二次更新操作
+    questionTypeFMT(row, column, cellValue, index) {
+      // console.log(cellValue)   3  2 ...
+      // 把对应的的汉字返回
+      return this.questionTypeList[cellValue - 1].label
+    },
     // 基础题库列表
     async getQuestionList() {
       let res = await list()
@@ -235,7 +241,7 @@ export default {
 </script>
 
 <style scoped>
-.el-table{
+.el-table {
   margin-top: 20px;
 }
 .el-input {
