@@ -110,12 +110,12 @@
           <el-col :span="6">
             二级目录
             <el-select v-model="searchForm.catalogID" placeholder="请选择" class="wh">
-              <!-- <el-option
-                v-for="item in questionTypeList"
+              <el-option
+                v-for="item in catalogIDList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              ></el-option>-->
+              ></el-option>
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -131,6 +131,7 @@
 <script>
 // 导入api
 import { simple as usersSimple } from '@/api/base/users' // 录入人
+import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
 import { simple as tagsSimple } from '@/api/hmmm/tags' // 标签
 import { simple } from '@/api/hmmm/subjects' // 学科api
 // 导入 题型  难度
@@ -144,6 +145,7 @@ export default {
   data() {
     return {
       // 定义各个搜索表单域的数据展示成员
+      catalogIDList: [], // 二级目录
       creatorIDList: [], // 录入人
       tagsList: [], // 标签
       subjectIDList: [], // 学科列表
@@ -167,6 +169,7 @@ export default {
     }
   },
   created() {
+    this.getCatalogIDList() // 二级目录列表
     this.getCreatorIDList() // 录入人列表
     this.getTagsList() // 标签
     this.getSubjectIDList() // 学科列表
@@ -174,6 +177,12 @@ export default {
     // console.log(this.questionTypeList) // 查看 题型
   },
   methods: {
+     // 二级目录列表
+    async getCatalogIDList() {
+      let res = await directorysSimple()
+      // console.log(res)
+      this.catalogIDList = res.data
+    },
     // 录入人列表
     async getCreatorIDList() {
       let res = await usersSimple()
