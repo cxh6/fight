@@ -53,21 +53,16 @@
         <el-row :gutter="20">
           <el-col :span="6">
             城市
-            <el-select v-model="searchForm.province" placeholder="选城市" style="width:109px">
-              <!-- <el-option
-                v-for="item in subjectIDList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>-->
+            <el-select v-model="searchForm.province" placeholder="选城市" style="width:109px" @change="searchForm.city=''">
+              <el-option v-for="item in provinces()" :key="item" :label="item" :value="item"></el-option>
             </el-select>
             <el-select v-model="searchForm.city" placeholder="选区县" style="width:109px">
-              <!-- <el-option
-                v-for="item in subjectIDList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>-->
+               <el-option
+                v-for="item in citys(searchForm.province)"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -88,18 +83,13 @@
           <el-col :span="6">
             方向
             <el-select v-model="searchForm.direction" placeholder="请选择" class="wh">
-              <el-option
-                v-for="item in directionList"
-                :key="item"
-                :label="item"
-                :value="item"
-              ></el-option>
+              <el-option v-for="item in directionList" :key="item" :label="item" :value="item"></el-option>
             </el-select>
           </el-col>
           <el-col :span="6">
             录入人
             <el-select v-model="searchForm.creatorID" placeholder="请选择" class="wh">
-               <el-option
+              <el-option
                 v-for="item in creatorIDList"
                 :key="item.id"
                 :label="item.username"
@@ -130,6 +120,7 @@
 
 <script>
 // 导入api
+import { provinces, citys } from '@/api/hmmm/citys' // 城市  区县
 import { simple as usersSimple } from '@/api/base/users' // 录入人
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
 import { simple as tagsSimple } from '@/api/hmmm/tags' // 标签
@@ -150,9 +141,9 @@ export default {
       creatorIDList: [], // 录入人
       tagsList: [], // 标签
       subjectIDList: [], // 学科列表
-      directionList, // 简易成员赋值
-      difficultyList, // 简易成员赋值
-      questionTypeList, // 简易成员赋值
+      directionList, // 方向 简易成员赋值
+      difficultyList, // 难度 简易成员赋值
+      questionTypeList, // 试题类型 简易成员赋值
       // 定义搜索数据对象
       searchForm: {
         subjectID: '', // 学科
@@ -160,7 +151,7 @@ export default {
         questionType: '', // 类型
         tags: '', // 标签
         province: '', // 城市
-        city: '', // 地区
+        city: '', // 区县
         keyword: '', // 关键字
         remarks: '', // 备注
         shortName: '', // 企业简称
@@ -178,9 +169,13 @@ export default {
     // console.log(this.difficultyList)  // 查看 难度
     // console.log(this.questionTypeList) // 查看 题型
     // console.log(this.directionList) // 查看 方向  ["o2o", "外包服务",....]
+    // console.log(this.provinces()) // 查看 城市
+    // console.log(this.citys()) // 查看 区县
   },
   methods: {
-     // 二级目录列表
+    provinces, // 城市 简易成员赋值 provinces:provinces
+    citys, // 区县 简易成员赋值
+    // 二级目录列表
     async getCatalogIDList() {
       let res = await directorysSimple()
       // console.log(res)
