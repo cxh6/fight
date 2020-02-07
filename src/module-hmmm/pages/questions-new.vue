@@ -105,7 +105,7 @@
             <el-input type="text" v-model="addForm.tags"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary">提交</el-button>
+            <el-button type="primary" @click="tianjia()">提交</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -114,6 +114,7 @@
 </template>
 
 <script>
+import { add } from '@/api/hmmm/questions' // 添加试题api
 import { list } from '@/api/hmmm/companys' // 学科
 import { simple } from '@/api/hmmm/subjects' // 学科
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
@@ -181,6 +182,13 @@ export default {
   methods: {
     provinces, // 城市 简易成员赋值 provinces:provinces
     citys, // 区县 简易成员赋值
+    // 收集表单数据，完成添加操作
+    async tianjia() {
+      // 注意：要使得数据完成添加后，再做列表页面重定向操作
+      await add(this.addForm) // 添加数据
+      this.$message.success('添加数据成功！')
+      this.$router.push('/questions/list') // 路由重定向跳转
+    },
     // 企业列表
     async getEnterpriseIDList() {
       let res = await list()
