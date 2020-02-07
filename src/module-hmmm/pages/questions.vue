@@ -88,12 +88,12 @@
           <el-col :span="6">
             方向
             <el-select v-model="searchForm.direction" placeholder="请选择" class="wh">
-              <!-- <el-option
-                v-for="item in subjectIDList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>-->
+              <el-option
+                v-for="item in directionList"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -134,9 +134,10 @@ import { simple as usersSimple } from '@/api/base/users' // 录入人
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
 import { simple as tagsSimple } from '@/api/hmmm/tags' // 标签
 import { simple } from '@/api/hmmm/subjects' // 学科api
-// 导入 题型  难度
+// 导入 题型  难度  方向
 // as给导入的成员设置别名
 import {
+  direction as directionList,
   difficulty as difficultyList,
   questionType as questionTypeList
 } from '@/api/hmmm/constants' // 常量数据
@@ -149,6 +150,7 @@ export default {
       creatorIDList: [], // 录入人
       tagsList: [], // 标签
       subjectIDList: [], // 学科列表
+      directionList, // 简易成员赋值
       difficultyList, // 简易成员赋值
       questionTypeList, // 简易成员赋值
       // 定义搜索数据对象
@@ -175,6 +177,7 @@ export default {
     this.getSubjectIDList() // 学科列表
     // console.log(this.difficultyList)  // 查看 难度
     // console.log(this.questionTypeList) // 查看 题型
+    // console.log(this.directionList) // 查看 方向  ["o2o", "外包服务",....]
   },
   methods: {
      // 二级目录列表
