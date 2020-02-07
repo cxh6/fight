@@ -70,6 +70,43 @@
               >{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="题干：">
+            <el-input type="textarea" v-model="addForm.question"></el-input>
+          </el-form-item>
+          <el-form-item label="选项：">
+            <br />
+            <el-radio v-model="singleSelect" :label="0">
+              A:
+              <el-input v-model="addForm.options[0].title"></el-input>
+            </el-radio>
+            <br />
+            <el-radio v-model="singleSelect" :label="1">
+              B:
+              <el-input v-model="addForm.options[1].title"></el-input>
+            </el-radio>
+            <br />
+            <el-radio v-model="singleSelect" :label="2">
+              C:
+              <el-input v-model="addForm.options[2].title"></el-input>
+            </el-radio>
+            <br />
+            <el-radio v-model="singleSelect" :label="3">
+              D:
+              <el-input v-model="addForm.options[3].title"></el-input>
+            </el-radio>
+          </el-form-item>
+          <el-form-item label="答案：">
+            <el-input type="textarea" v-model="addForm.answer"></el-input>
+          </el-form-item>
+          <el-form-item label="备注：">
+            <el-input type="textarea" v-model="addForm.remarks"></el-input>
+          </el-form-item>
+          <el-form-item label="标签：">
+            <el-input type="text" v-model="addForm.tags"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary">提交</el-button>
+          </el-form-item>
         </el-form>
       </el-card>
     </div>
@@ -91,6 +128,7 @@ export default {
   name: 'QuestionsNew',
   data() {
     return {
+      singleSelect: '',
       difficultyList, // 难度 (简易成员赋值)
       questionTypeList, // 题型 (简易成员赋值)
       enterpriseIDList: [], // 企业列表
@@ -99,6 +137,14 @@ export default {
       catalogIDList: [], // 二级目录
       // 如下表单字段名称来自yapi数据接口
       addForm: {
+        options: [
+          // {code: '编号ABCD', title: '当前项目文字答案',
+          //   img: '当前项目图片答案', isRight: boolean表明当前项目是否是答案},
+          { code: 'A', title: '', img: '', isRight: false },
+          { code: 'B', title: '', img: '', isRight: false },
+          { code: 'C', title: '', img: '', isRight: false },
+          { code: 'D', title: '', img: '', isRight: false }
+        ],
         difficulty: '1', // 默认“单选” 难度 项目被选中(要求是字符串)
         questionType: '1', // 默认“单选” 题型 项目被选中(要求是字符串)
         subjectID: '', // 学科
@@ -106,8 +152,25 @@ export default {
         enterpriseID: '', // 企业
         city: '', // 区县
         province: '', // 城市
-        direction: '' // 方向
+        direction: '', // 方向
+        question: '', // 题干
+        answer: '', // 答案
+        remarks: '', // 备注
+        tags: '', // 标签
+        videoURL: 'http://www.xxx.com' // 解析视频
       }
+    }
+  },
+  // watch监听器
+  watch: {
+    // 监听选项选中要把isRight的值做设置操作
+    singleSelect(newval) {
+      // 要使得全部的isRight变为false
+      // newval代表的当前项目的isRight变为true
+      for (var i = 0; i < 4; i++) {
+        this.addForm.options[i].isRight = false
+      }
+      this.addForm.options[newval].isRight = true
     }
   },
   created() {
