@@ -53,11 +53,16 @@
         <el-row :gutter="20">
           <el-col :span="6">
             城市
-            <el-select v-model="searchForm.province" placeholder="选城市" style="width:109px" @change="searchForm.city=''">
+            <el-select
+              v-model="searchForm.province"
+              placeholder="选城市"
+              style="width:109px"
+              @change="searchForm.city=''"
+            >
               <el-option v-for="item in provinces()" :key="item" :label="item" :value="item"></el-option>
             </el-select>
             <el-select v-model="searchForm.city" placeholder="选区县" style="width:109px">
-               <el-option
+              <el-option
                 v-for="item in citys(searchForm.province)"
                 :key="item"
                 :label="item"
@@ -113,6 +118,23 @@
             <el-button size="mini" type="primary">搜索</el-button>
           </el-col>
         </el-row>
+        <!-- 基础试题列表 -->
+        <el-table :data="questionList" style="width:100%">
+          <el-table-column label="序号" type="index" width="60"></el-table-column>
+          <el-table-column label="试题编号" prop="number"></el-table-column>
+          <el-table-column label="学科" prop="subject"></el-table-column>
+          <el-table-column label="题型" prop="questionType"></el-table-column>
+          <el-table-column label="题干" prop="question"></el-table-column>
+          <el-table-column label="录入时间" prop="addDate" width="170"></el-table-column>
+          <el-table-column label="难度" prop="difficulty"></el-table-column>
+          <el-table-column label="录入人" prop="creator"></el-table-column>
+          <el-table-column label="操作" width="200">
+            <a href="#">预览</a>
+            <a href="#">修改</a>
+            <a href="#">删除</a>
+            <a href="#">加入精选</a>
+          </el-table-column>
+        </el-table>
       </el-card>
     </div>
   </div>
@@ -120,6 +142,7 @@
 
 <script>
 // 导入api
+import { list } from '@/api/hmmm/questions' // 基础题库相关api导入
 import { provinces, citys } from '@/api/hmmm/citys' // 城市  区县
 import { simple as usersSimple } from '@/api/base/users' // 录入人
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
@@ -137,6 +160,7 @@ export default {
   data() {
     return {
       // 定义各个搜索表单域的数据展示成员
+      questionList: [], // 基础题库列表信息
       catalogIDList: [], // 二级目录
       creatorIDList: [], // 录入人
       tagsList: [], // 标签
@@ -162,6 +186,7 @@ export default {
     }
   },
   created() {
+    this.getQuestionList() // 基础题库列表
     this.getCatalogIDList() // 二级目录列表
     this.getCreatorIDList() // 录入人列表
     this.getTagsList() // 标签
@@ -175,6 +200,12 @@ export default {
   methods: {
     provinces, // 城市 简易成员赋值 provinces:provinces
     citys, // 区县 简易成员赋值
+    // 基础题库列表
+    async getQuestionList() {
+      let res = await list()
+      // console.log(res)
+      this.questionList = res.data.items
+    },
     // 二级目录列表
     async getCatalogIDList() {
       let res = await directorysSimple()
@@ -204,6 +235,9 @@ export default {
 </script>
 
 <style scoped>
+.el-table{
+  margin-top: 20px;
+}
 .el-input {
   width: 223px;
 }
