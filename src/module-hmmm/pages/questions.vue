@@ -146,7 +146,7 @@
 
 <script>
 // 导入api
-import { list, remove } from '@/api/hmmm/questions' // 基础题库相关api导入  删除基础试题api
+import { list, remove } from '@/api/hmmm/questions' // 基础题库相关api导入  删除基础试题
 import { provinces, citys } from '@/api/hmmm/citys' // 城市  区县
 import { simple as usersSimple } from '@/api/base/users' // 录入人
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
