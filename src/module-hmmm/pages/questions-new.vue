@@ -52,6 +52,15 @@
               <el-option v-for="item in directionList" :key="item" :label="item" :value="item"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="题型：">
+            <el-radio-group v-model="addForm.questionType">
+              <el-radio
+                v-for="item in questionTypeList"
+                :key="item.value"
+                :label=" item.value+'' "
+              >{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
         </el-form>
       </el-card>
     </div>
@@ -63,18 +72,23 @@ import { list } from '@/api/hmmm/companys' // 学科
 import { simple } from '@/api/hmmm/subjects' // 学科
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
 import { provinces, citys } from '@/api/hmmm/citys' // 城市  区县
-// 导入  方向
-import { direction as directionList } from '@/api/hmmm/constants' // 常量数据
+// 导入  方向、题型
+import {
+  direction as directionList,
+  questionType as questionTypeList
+} from '@/api/hmmm/constants' // 常量数据
 export default {
   name: 'QuestionsNew',
   data() {
     return {
+      questionTypeList, // 题型 (简易成员赋值)
       enterpriseIDList: [], // 企业列表
       directionList, // 方向 简易成员赋值
       subjectIDList: [], // 学科列表
       catalogIDList: [], // 二级目录
+      // 如下表单字段名称来自yapi数据接口
       addForm: {
-        // 如下表单字段名称来自yapi数据接口
+        questionType: '1', // 默认“单选” 题型 项目被选中(要求是字符串)
         subjectID: '', // 学科
         catalogID: '', // 二级目录
         enterpriseID: '', // 企业
