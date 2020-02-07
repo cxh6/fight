@@ -40,12 +40,12 @@
           <el-col :span="6">
             标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签
             <el-select v-model="searchForm.tags" placeholder="请选择" class="wh">
-              <!-- <el-option
-                v-for="item in options"
+              <el-option
+                v-for="item in tagsList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              ></el-option>-->
+              ></el-option>
             </el-select>
           </el-col>
         </el-row>
@@ -115,7 +115,7 @@
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              ></el-option> -->
+              ></el-option>-->
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -130,8 +130,8 @@
 
 <script>
 // 导入api
-// 学科api
-import { simple } from '@/api/hmmm/subjects'
+import { simple as tagsSimple } from '@/api/hmmm/tags' // 标签
+import { simple } from '@/api/hmmm/subjects' // 学科api
 // 导入 题型  难度
 // as给导入的成员设置别名
 import {
@@ -143,6 +143,7 @@ export default {
   data() {
     return {
       // 定义各个搜索表单域的数据展示成员
+      tagsList: [], // 标签
       subjectIDList: [], // 学科列表
       difficultyList, // 简易成员赋值
       questionTypeList, // 简易成员赋值
@@ -150,17 +151,32 @@ export default {
       searchForm: {
         subjectID: '', // 学科
         difficulty: '', // 难度
-        questionType: '' // 类型
+        questionType: '', // 类型
+        tags: '', // 标签
+        province: '', // 城市
+        city: '', // 地区
+        keyword: '', // 关键字
+        remarks: '', // 备注
+        shortName: '', // 企业简称
+        direction: '', // 方向
+        creatorID: '', // 录入人
+        catalogID: '' // 二级目录
       }
     }
   },
   created() {
-    // 学科列表
-    this.getSubjectIDList()
+    this.getTagsList() // 标签
+    this.getSubjectIDList() // 学科列表
     // console.log(this.difficultyList)  // 查看 难度
     // console.log(this.questionTypeList) // 查看 题型
   },
   methods: {
+    // 标签列表
+    async getTagsList() {
+      let res = await tagsSimple()
+      // console.log(res)
+      this.tagsList = res.data
+    },
     // 学科列表
     async getSubjectIDList() {
       let res = await simple()
@@ -172,10 +188,10 @@ export default {
 </script>
 
 <style scoped>
-.el-input{
+.el-input {
   width: 223px;
 }
-.el-row{
+.el-row {
   margin-bottom: 10px;
 }
 </style>
