@@ -131,10 +131,12 @@
           <el-table-column :formatter="difficultyFMT" label="难度" prop="difficulty"></el-table-column>
           <el-table-column label="录入人" prop="creator"></el-table-column>
           <el-table-column label="操作" width="200">
-            <a href="#">预览</a>
-            <a href="#">修改</a>
-            <a href="#">删除</a>
-            <a href="#">加入精选</a>
+            <template slot-scope="stData">
+              <a href="#">预览</a>
+              <a href="#">修改</a>
+              <a href="#" @click.prevent="del(stData.row)">删除</a>
+              <a href="#">加入精选</a>
+            </template>
           </el-table-column>
         </el-table>
       </el-card>
@@ -144,7 +146,7 @@
 
 <script>
 // 导入api
-import { list } from '@/api/hmmm/questions' // 基础题库相关api导入
+import { list, remove } from '@/api/hmmm/questions' // 基础题库相关api导入  删除基础试题api
 import { provinces, citys } from '@/api/hmmm/citys' // 城市  区县
 import { simple as usersSimple } from '@/api/base/users' // 录入人
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
@@ -212,6 +214,22 @@ export default {
   methods: {
     provinces, // 城市 简易成员赋值 provinces:provinces
     citys, // 区县 简易成员赋值
+    // 删除试题操作
+    del(question) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          this.$message.success('删除成功!')
+          let res = await remove(question)
+          // console.log(res)
+          // 刷新列表
+          this.getQuestionList()
+        })
+        .catch(() => {})
+    },
     // 对 难度 进行二次更新操作
     difficultyFMT(row, column, cellValue, index) {
       // 把对应的的汉字返回
