@@ -25,14 +25,21 @@
             </el-select>
           </el-form-item>
           <el-form-item label="企业：">
-            <el-select v-model="addForm.enterpriseID"></el-select>
+            <el-select v-model="addForm.enterpriseID">
+              <el-option
+                v-for="item in enterpriseIDList"
+                :key="item.id"
+                :label="item.shortName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="城市：">
             <el-select v-model="addForm.province" @change="addForm.city=''">
-               <el-option v-for="item in provinces()" :key="item" :label="item" :value="item"></el-option>
+              <el-option v-for="item in provinces()" :key="item" :label="item" :value="item"></el-option>
             </el-select>
             <el-select v-model="addForm.city">
-               <el-option
+              <el-option
                 v-for="item in citys(addForm.province)"
                 :key="item"
                 :label="item"
@@ -52,6 +59,7 @@
 </template>
 
 <script>
+import { list } from '@/api/hmmm/companys' // 学科
 import { simple } from '@/api/hmmm/subjects' // 学科
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
 import { provinces, citys } from '@/api/hmmm/citys' // 城市  区县
@@ -61,6 +69,7 @@ export default {
   name: 'QuestionsNew',
   data() {
     return {
+      enterpriseIDList: [], // 企业列表
       directionList, // 方向 简易成员赋值
       subjectIDList: [], // 学科列表
       catalogIDList: [], // 二级目录
@@ -78,10 +87,17 @@ export default {
   created() {
     this.getCatalogIDList() // 二级目录列表
     this.getSubjectIDList() // 学科列表
+    this.getEnterpriseIDList() // 企业列表
   },
   methods: {
     provinces, // 城市 简易成员赋值 provinces:provinces
     citys, // 区县 简易成员赋值
+    // 企业列表
+    async getEnterpriseIDList() {
+      let res = await list()
+      // console.log(res)
+      this.enterpriseIDList = res.data.items
+    },
     // 二级目录列表
     async getCatalogIDList() {
       let res = await directorysSimple()
