@@ -75,25 +75,50 @@
           </el-form-item>
           <el-form-item label="选项：">
             <br />
-            <el-radio v-model="singleSelect" :label="0">
-              A:
-              <el-input v-model="addForm.options[0].title"></el-input>
-            </el-radio>
-            <br />
-            <el-radio v-model="singleSelect" :label="1">
-              B:
-              <el-input v-model="addForm.options[1].title"></el-input>
-            </el-radio>
-            <br />
-            <el-radio v-model="singleSelect" :label="2">
-              C:
-              <el-input v-model="addForm.options[2].title"></el-input>
-            </el-radio>
-            <br />
-            <el-radio v-model="singleSelect" :label="3">
-              D:
-              <el-input v-model="addForm.options[3].title"></el-input>
-            </el-radio>
+            <!-- 单选 -->
+            <template v-if="addForm.questionType==='1'">
+              <el-radio v-model="singleSelect" :label="0">
+                A:
+                <el-input v-model="addForm.options[0].title"></el-input>
+              </el-radio>
+              <br />
+              <el-radio v-model="singleSelect" :label="1">
+                B:
+                <el-input v-model="addForm.options[1].title"></el-input>
+              </el-radio>
+              <br />
+              <el-radio v-model="singleSelect" :label="2">
+                C:
+                <el-input v-model="addForm.options[2].title"></el-input>
+              </el-radio>
+              <br />
+              <el-radio v-model="singleSelect" :label="3">
+                D:
+                <el-input v-model="addForm.options[3].title"></el-input>
+              </el-radio>
+            </template>
+            <!-- 多选 -->
+            <template v-if="addForm.questionType==='2'">
+              <el-checkbox v-model="addForm.options[0].isRight">
+                A:
+                <el-input v-model="addForm.options[0].title"></el-input>
+              </el-checkbox>
+              <br />
+              <el-checkbox v-model="addForm.options[1].isRight">
+                B:
+                <el-input v-model="addForm.options[1].title"></el-input>
+              </el-checkbox>
+              <br />
+              <el-checkbox v-model="addForm.options[2].isRight">
+                C:
+                <el-input v-model="addForm.options[2].title"></el-input>
+              </el-checkbox>
+              <br />
+              <el-checkbox v-model="addForm.options[3].isRight">
+                D:
+                <el-input v-model="addForm.options[3].title"></el-input>
+              </el-checkbox>
+            </template>
           </el-form-item>
           <el-form-item label="答案：">
             <el-input type="textarea" v-model="addForm.answer"></el-input>
