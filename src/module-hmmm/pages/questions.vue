@@ -4,8 +4,8 @@
       <el-card class="box-card">
         <el-row>
           <el-col>
-            <el-button type="primary" size="mini" @click="$router.push('/questions/new')">新增试题</el-button>
-            <el-button type="danger" size="mini">批量导入</el-button>
+            <el-button type="primary" size="mini" @click="$router.push('/questions/new')"> {{ $t('question.newadd') }}</el-button>
+            <el-button type="danger" size="mini"> {{ $t('question.manyadd') }}</el-button>
           </el-col>
         </el-row>
         <!-- 第一行 -->
@@ -145,6 +145,16 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 试题分页 -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="searchForm.page"
+          :page-sizes="[3, 5, 10, 20]"
+          :page-size="searchForm.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tot"
+        ></el-pagination>
       </el-card>
     </div>
   </div>
@@ -170,6 +180,7 @@ export default {
   data() {
     return {
       // 定义各个搜索表单域的数据展示成员
+      tot: 0, // 试题总数
       questionList: [], // 基础题库列表信息
       catalogIDList: [], // 二级目录
       creatorIDList: [], // 录入人
@@ -180,6 +191,8 @@ export default {
       questionTypeList, // 试题类型 简易成员赋值
       // 定义搜索数据对象
       searchForm: {
+        page: 1, // 默认获取第1页数据
+        pagesize: 3, // 默认每页获得3条数据
         subjectID: '', // 学科
         difficulty: '', // 难度
         questionType: '', // 类型
@@ -220,6 +233,16 @@ export default {
   methods: {
     provinces, // 城市 简易成员赋值 provinces:provinces
     citys, // 区县 简易成员赋值
+    // 每页条数变化的回调处理
+    handleSizeChange(val) {
+      // console.log(val)
+      this.searchForm.pagesize = val
+    },
+    // 页码变化的回调处理
+    handleCurrentChange(val) {
+      // console.log(val)
+      this.searchForm.page = val
+    },
     // 删除试题操作
     del(question) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -253,6 +276,8 @@ export default {
       let res = await list(this.searchForm)
       // console.log(res)
       this.questionList = res.data.items
+      // 试题总条数
+      this.tot = res.data.counts
     },
     // 二级目录列表
     async getCatalogIDList() {
@@ -283,6 +308,9 @@ export default {
 </script>
 
 <style scoped>
+.el-pagination{
+  margin-top:15px;
+}
 .el-table {
   margin-top: 20px;
 }
