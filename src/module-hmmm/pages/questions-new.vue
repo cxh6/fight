@@ -61,6 +61,15 @@
               >{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="难度：">
+            <el-radio-group v-model="addForm.difficulty">
+              <el-radio
+                v-for="item in difficultyList"
+                :key="item.value"
+                :label=" item.value+'' "
+              >{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
         </el-form>
       </el-card>
     </div>
@@ -72,8 +81,9 @@ import { list } from '@/api/hmmm/companys' // 学科
 import { simple } from '@/api/hmmm/subjects' // 学科
 import { simple as directorysSimple } from '@/api/hmmm/directorys' // 二级目录
 import { provinces, citys } from '@/api/hmmm/citys' // 城市  区县
-// 导入  方向、题型
+// 导入  方向、题型、难度
 import {
+  difficulty as difficultyList,
   direction as directionList,
   questionType as questionTypeList
 } from '@/api/hmmm/constants' // 常量数据
@@ -81,6 +91,7 @@ export default {
   name: 'QuestionsNew',
   data() {
     return {
+      difficultyList, // 难度 (简易成员赋值)
       questionTypeList, // 题型 (简易成员赋值)
       enterpriseIDList: [], // 企业列表
       directionList, // 方向 简易成员赋值
@@ -88,6 +99,7 @@ export default {
       catalogIDList: [], // 二级目录
       // 如下表单字段名称来自yapi数据接口
       addForm: {
+        difficulty: '1', // 默认“单选” 难度 项目被选中(要求是字符串)
         questionType: '1', // 默认“单选” 题型 项目被选中(要求是字符串)
         subjectID: '', // 学科
         catalogID: '', // 二级目录
