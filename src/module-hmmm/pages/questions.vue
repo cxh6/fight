@@ -99,12 +99,12 @@
           <el-col :span="6">
             录入人
             <el-select v-model="searchForm.creatorID" placeholder="请选择" class="wh">
-              <!-- <el-option
-                v-for="item in difficultyList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>-->
+               <el-option
+                v-for="item in creatorIDList"
+                :key="item.id"
+                :label="item.username"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -130,6 +130,7 @@
 
 <script>
 // 导入api
+import { simple as usersSimple } from '@/api/base/users' // 录入人
 import { simple as tagsSimple } from '@/api/hmmm/tags' // 标签
 import { simple } from '@/api/hmmm/subjects' // 学科api
 // 导入 题型  难度
@@ -143,6 +144,7 @@ export default {
   data() {
     return {
       // 定义各个搜索表单域的数据展示成员
+      creatorIDList: [], // 录入人
       tagsList: [], // 标签
       subjectIDList: [], // 学科列表
       difficultyList, // 简易成员赋值
@@ -165,12 +167,19 @@ export default {
     }
   },
   created() {
+    this.getCreatorIDList() // 录入人列表
     this.getTagsList() // 标签
     this.getSubjectIDList() // 学科列表
     // console.log(this.difficultyList)  // 查看 难度
     // console.log(this.questionTypeList) // 查看 题型
   },
   methods: {
+    // 录入人列表
+    async getCreatorIDList() {
+      let res = await usersSimple()
+      // console.log(res)
+      this.creatorIDList = res.data
+    },
     // 标签列表
     async getTagsList() {
       let res = await tagsSimple()
