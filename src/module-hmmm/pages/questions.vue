@@ -126,7 +126,7 @@
           <el-table-column :formatter="questionTypeFMT" label="题型" prop="questionType"></el-table-column>
           <el-table-column label="题干" prop="question"></el-table-column>
           <el-table-column label="录入时间" prop="addDate" width="170"></el-table-column>
-          <el-table-column label="难度" prop="difficulty"></el-table-column>
+          <el-table-column :formatter="difficultyFMT" label="难度" prop="difficulty"></el-table-column>
           <el-table-column label="录入人" prop="creator"></el-table-column>
           <el-table-column label="操作" width="200">
             <a href="#">预览</a>
@@ -200,6 +200,11 @@ export default {
   methods: {
     provinces, // 城市 简易成员赋值 provinces:provinces
     citys, // 区县 简易成员赋值
+      // 对 难度 进行二次更新操作
+    difficultyFMT(row, column, cellValue, index) {
+      // 把对应的的汉字返回
+      return this.difficultyList[cellValue - 1].label
+    },
     // 对 题型 进行二次更新操作
     questionTypeFMT(row, column, cellValue, index) {
       // console.log(cellValue)   3  2 ...
